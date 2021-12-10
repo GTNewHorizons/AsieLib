@@ -1,12 +1,12 @@
 [
 {
-  "modid": "asielib",
-  "name": "asielib",
+  "modid": "${modId}",
+  "name": "${modName}",
   "description": "Utilities for asie's mods",
-  "version": "${version}",
+  "version": "${modVersion}",
   "credits": "",
   "logoFile": "",
-  "mcversion": "${mcversion}",
+  "mcversion": "${minecraftVersion}",
   "url": "",
   "updateUrl": "",
   "authorList": [ "asiekierka", "Vexatos" ],

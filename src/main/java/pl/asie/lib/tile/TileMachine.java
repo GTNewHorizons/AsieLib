@@ -4,7 +4,6 @@ import cpw.mods.fml.common.Optional;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergyTile;
-import ic2classic.api.Direction;
 import mods.immibis.redlogic.api.wiring.IBareRedstoneWire;
 import mods.immibis.redlogic.api.wiring.IBundledEmitter;
 import mods.immibis.redlogic.api.wiring.IBundledWire;
@@ -80,9 +79,6 @@ public class TileMachine extends TileEntityBase implements
 			didInitIC2 = true; // Just so this check won't be done every tick.
 		}
 		if(!didInitIC2C) {
-			if(Mods.isLoaded(Mods.IC2Classic) && this.battery != null) {
-				this.initICClassic();
-			}
 			didInitIC2C = true; // Just so this check won't be done every tick.
 		}
 	}
@@ -93,9 +89,6 @@ public class TileMachine extends TileEntityBase implements
 		if(Mods.isLoaded(Mods.IC2) && this.battery != null) {
 			this.deinitIC();
 		}
-		if(Mods.isLoaded(Mods.IC2Classic) && this.battery != null) {
-			this.deinitICClassic();
-		}
 	}
 
 	@Override
@@ -103,9 +96,6 @@ public class TileMachine extends TileEntityBase implements
 		super.onChunkUnload();
 		if(Mods.isLoaded(Mods.IC2) && this.battery != null) {
 			this.deinitIC();
-		}
-		if(Mods.isLoaded(Mods.IC2Classic) && this.battery != null) {
-			this.deinitICClassic();
 		}
 	}
 	// (Bundled) Redstone
@@ -404,61 +394,6 @@ public class TileMachine extends TileEntityBase implements
 	// Energy (EU - IC2 Classic)
 
 	private boolean didInitIC2C = false;
-
-	@Optional.Method(modid = Mods.IC2Classic)
-	private void initICClassic() {
-		if(!didInitIC2C) {
-			MinecraftForge.EVENT_BUS.post(new ic2classic.api.energy.event.EnergyTileLoadEvent((ic2classic.api.energy.tile.IEnergyTile) this));
-		}
-		didInitIC2C = true;
-	}
-
-	@Optional.Method(modid = Mods.IC2Classic)
-	private void deinitICClassic() {
-		if(didInitIC2C) {
-			MinecraftForge.EVENT_BUS.post(new ic2classic.api.energy.event.EnergyTileUnloadEvent((ic2classic.api.energy.tile.IEnergyTile) this));
-		}
-		didInitIC2C = false;
-	}
-
-	@Optional.Method(modid = Mods.IC2Classic)
-	public boolean acceptsEnergyFrom(TileEntity arg0, Direction arg1) {
-		if(this.battery != null) {
-			return this.battery.canInsert(arg1.toSideValue(), "EU");
-		} else {
-			return false;
-		}
-	}
-
-	@Optional.Method(modid = Mods.IC2Classic)
-	public boolean isAddedToEnergyNet() {
-		return didInitIC2C;
-	}
-
-	@Optional.Method(modid = Mods.IC2Classic)
-	public int demandsEnergy() {
-		if(this.battery != null) {
-			return (int) Math.floor(EnergyConverter.convertEnergy(battery.getMaxEnergyInserted(), "RF", "EU"));
-		} else {
-			return 0;
-		}
-	}
-
-	@Optional.Method(modid = Mods.IC2Classic)
-	public int getMaxSafeInput() {
-		return Integer.MAX_VALUE;
-	}
-
-	@Optional.Method(modid = Mods.IC2Classic)
-	public int injectEnergy(Direction arg0, int amount) {
-		if(this.battery != null) {
-			double amountRF = EnergyConverter.convertEnergy(amount, "EU", "RF");
-			double injectedRF = this.battery.insert(arg0.toSideValue(), amountRF, false);
-			return amount - (int) Math.floor(EnergyConverter.convertEnergy(injectedRF, "RF", "EU"));
-		} else {
-			return amount;
-		}
-	}
 
 	// NBT
 	@Override

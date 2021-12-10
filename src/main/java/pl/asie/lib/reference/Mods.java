@@ -23,7 +23,6 @@ public class Mods {
 	public static final String
 		AE2 = "appliedenergistics2",
 		IC2 = "IC2",
-		IC2Classic = "IC2-Classic",
 		//GregTech = "gregtech",
 		Mekanism = "Mekanism",
 		ProjectRed = "ProjRed|Core",
@@ -86,8 +85,7 @@ public class Mods {
 	public static boolean hasEnergyMod() {
 		if(!checkedEnergyMods) {
 			hasEnergyMod = API.hasAPI(API.CoFHEnergy)
-				|| isLoaded(IC2)
-				|| isLoaded(IC2Classic);
+				|| isLoaded(IC2);
 			checkedEnergyMods = true;
 		}
 		return hasEnergyMod;
