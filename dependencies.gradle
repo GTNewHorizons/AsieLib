@@ -1,13 +1,13 @@
 // Add your dependencies here
 
 dependencies {
-    compileOnly("com.github.GTNewHorizons:EnderIO:master-SNAPSHOT:api") {
+    compileOnly("com.github.GTNewHorizons:EnderIO:2.3.1.27:api") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:master-SNAPSHOT:api") {
+    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-70-GTNH:api") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:ProjectRed:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:ProjectRed:4.7.4:dev") {
         transitive = false
     }
 
