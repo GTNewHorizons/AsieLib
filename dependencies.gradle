@@ -10,7 +10,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:ProjectRed:4.7.4:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:BuildCraft:7.1.25:dev") {
+    compileOnly("com.github.GTNewHorizons:BuildCraft:7.1.26:dev") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:OpenComputers:1.7.5.21-GTNH:api") {
