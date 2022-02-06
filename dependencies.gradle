@@ -1,16 +1,21 @@
 // Add your dependencies here
 
 dependencies {
-    compileOnly("com.github.GTNewHorizons:EnderIO:2.3.1.27:api") {
+    compileOnly("com.github.GTNewHorizons:EnderIO:2.3.1.28:api") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-70-GTNH:api") {
+    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-75-GTNH:api") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:ProjectRed:4.7.4:dev") {
         transitive = false
     }
-
+    compileOnly("com.github.GTNewHorizons:BuildCraft:7.1.25:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:OpenComputers:1.7.5.21-GTNH:api") {
+        transitive = false
+    }
     compileOnly("curse.maven:cofh-lib-220333:2388748") {
         transitive = false
     }
@@ -18,12 +23,6 @@ dependencies {
         transitive = false
     }
     compileOnly("curse.maven:eirairc-68420:2281173") {
-        transitive = false
-    }
-    compileOnly("com.mod-buildcraft:buildcraft:7.1.23:dev") {
-        transitive = false
-    }
-    compileOnly("li.cil.oc:OpenComputers:MC1.7.10-1.7.5.1356:api") {
         transitive = false
     }
     compileOnly("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev") {
