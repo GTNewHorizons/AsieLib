@@ -1,44 +1,46 @@
 package pl.asie.lib.gui.managed;
 
-import cpw.mods.fml.common.network.IGuiHandler;
+import java.util.ArrayList;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
+import cpw.mods.fml.common.network.IGuiHandler;
 
 /**
  * @author Vexatos
  */
 public class ManagedGuiHandler implements IGuiHandler {
-	private final ArrayList<IGuiProvider> guiProviders = new ArrayList<IGuiProvider>();
 
-	public int registerGuiProvider(IGuiProvider provider) {
-		guiProviders.add(provider);
-		int guiID = guiProviders.size() - 1;
-		provider.setGuiID(guiID);
-		return guiID;
-	}
+    private final ArrayList<IGuiProvider> guiProviders = new ArrayList<IGuiProvider>();
 
-	public IGuiProvider getGuiProvider(int guiID) {
-		if(guiID < 0 || guiID >= guiProviders.size()) {
-			return null;
-		}
-		return guiProviders.get(guiID);
-	}
+    public int registerGuiProvider(IGuiProvider provider) {
+        guiProviders.add(provider);
+        int guiID = guiProviders.size() - 1;
+        provider.setGuiID(guiID);
+        return guiID;
+    }
 
-	@Override
-	public Object getServerGuiElement(int guiID, EntityPlayer player, World world, int x, int y, int z) {
-		if(guiID < 0 || guiID >= guiProviders.size()) {
-			return null;
-		}
-		return guiProviders.get(guiID).makeContainer(guiID, player, world, x, y, z);
-	}
+    public IGuiProvider getGuiProvider(int guiID) {
+        if (guiID < 0 || guiID >= guiProviders.size()) {
+            return null;
+        }
+        return guiProviders.get(guiID);
+    }
 
-	@Override
-	public Object getClientGuiElement(int guiID, EntityPlayer player, World world, int x, int y, int z) {
-		if(guiID < 0 || guiID >= guiProviders.size()) {
-			return null;
-		}
-		return guiProviders.get(guiID).makeGui(guiID, player, world, x, y, z);
-	}
+    @Override
+    public Object getServerGuiElement(int guiID, EntityPlayer player, World world, int x, int y, int z) {
+        if (guiID < 0 || guiID >= guiProviders.size()) {
+            return null;
+        }
+        return guiProviders.get(guiID).makeContainer(guiID, player, world, x, y, z);
+    }
+
+    @Override
+    public Object getClientGuiElement(int guiID, EntityPlayer player, World world, int x, int y, int z) {
+        if (guiID < 0 || guiID >= guiProviders.size()) {
+            return null;
+        }
+        return guiProviders.get(guiID).makeGui(guiID, player, world, x, y, z);
+    }
 }

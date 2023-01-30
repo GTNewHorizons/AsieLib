@@ -5,11 +5,11 @@ package pl.asie.lib.util.internal;
  */
 public interface IColorable {
 
-	boolean canBeColored();
+    boolean canBeColored();
 
-	int getColor();
+    int getColor();
 
-	int getDefaultColor();
+    int getDefaultColor();
 
-	void setColor(int color);
+    void setColor(int color);
 }

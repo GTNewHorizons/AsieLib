@@ -12,16 +12,16 @@ import net.minecraftforge.fluids.IFluidContainerItem;
  */
 public class FluidUtils {
 
-	@SuppressWarnings("deprecation")
-	public static boolean containsFluid(ItemStack stack, Fluid fluid) {
-		Item item = stack.getItem();
-		FluidStack fstack = null;
-		if(item instanceof IFluidContainerItem) {
-			fstack = ((IFluidContainerItem) item).getFluid(stack);
-		}
-		if(fstack == null) {
-			fstack = FluidContainerRegistry.getFluidForFilledItem(stack);
-		}
-		return fstack != null && fstack.getFluid() == fluid;
-	}
+    @SuppressWarnings("deprecation")
+    public static boolean containsFluid(ItemStack stack, Fluid fluid) {
+        Item item = stack.getItem();
+        FluidStack fstack = null;
+        if (item instanceof IFluidContainerItem) {
+            fstack = ((IFluidContainerItem) item).getFluid(stack);
+        }
+        if (fstack == null) {
+            fstack = FluidContainerRegistry.getFluidForFilledItem(stack);
+        }
+        return fstack != null && fstack.getFluid() == fluid;
+    }
 }

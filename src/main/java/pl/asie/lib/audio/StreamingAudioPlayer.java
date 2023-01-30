@@ -7,197 +7,212 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.lwjgl.BufferUtils;
-import org.lwjgl.openal.AL10;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundCategory;
 import net.minecraft.util.Vec3;
 
+import org.lwjgl.BufferUtils;
+import org.lwjgl.openal.AL10;
+
+import pl.asie.lib.AsieLibMod;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import pl.asie.lib.AsieLibMod;
-
 public class StreamingAudioPlayer extends DFPWM {
-	public class SourceEntry {
-		public final String id;
-		public final IntBuffer src;
-		public int receivedPackets;
 
-		public SourceEntry(String id) {
-			this.id = id;
-			src = BufferUtils.createIntBuffer(1);
-			AL10.alGenSources(src);
-		}
-	}
+    public class SourceEntry {
 
-	private final Set<SourceEntry> sources = new HashSet<SourceEntry>();
-	private final ArrayList<IntBuffer> buffersPlayed = new ArrayList<IntBuffer>();
-	private final int BUFFER_PACKETS, AUDIO_FORMAT;
+        public final String id;
+        public final IntBuffer src;
+        public int receivedPackets;
 
-	private IntBuffer currentBuffer;
+        public SourceEntry(String id) {
+            this.id = id;
+            src = BufferUtils.createIntBuffer(1);
+            AL10.alGenSources(src);
+        }
+    }
 
-	private int sampleRate = 32768;
-	private float volume = 1.0F;
-	private float distance = 24.0F;
+    private final Set<SourceEntry> sources = new HashSet<SourceEntry>();
+    private final ArrayList<IntBuffer> buffersPlayed = new ArrayList<IntBuffer>();
+    private final int BUFFER_PACKETS, AUDIO_FORMAT;
 
-	public StreamingAudioPlayer(boolean sixteenBit, boolean stereo, int bufferPackets) {
-		super();
-		BUFFER_PACKETS = bufferPackets;
-		if (sixteenBit) {
-			AUDIO_FORMAT = stereo ? AL10.AL_FORMAT_STEREO16 : AL10.AL_FORMAT_MONO16;
-		} else {
-			AUDIO_FORMAT = stereo ? AL10.AL_FORMAT_STEREO8 : AL10.AL_FORMAT_MONO8;
-		}
+    private IntBuffer currentBuffer;
 
-		reset();
-	}
+    private int sampleRate = 32768;
+    private float volume = 1.0F;
+    private float distance = 24.0F;
 
-	public void setHearing(float dist, float vol) {
-		this.distance = dist;
-		this.volume = vol;
-	}
+    public StreamingAudioPlayer(boolean sixteenBit, boolean stereo, int bufferPackets) {
+        super();
+        BUFFER_PACKETS = bufferPackets;
+        if (sixteenBit) {
+            AUDIO_FORMAT = stereo ? AL10.AL_FORMAT_STEREO16 : AL10.AL_FORMAT_MONO16;
+        } else {
+            AUDIO_FORMAT = stereo ? AL10.AL_FORMAT_STEREO8 : AL10.AL_FORMAT_MONO8;
+        }
 
-	public void setSampleRate(int rate) {
-		sampleRate = rate;
-	}
+        reset();
+    }
 
-	public void reset() {
-		buffersPlayed.clear();
-		stop();
-	}
+    public void setHearing(float dist, float vol) {
+        this.distance = dist;
+        this.volume = vol;
+    }
 
-	@SideOnly(Side.CLIENT)
-	public void updatePosition(String id, float x, float y, float z) {
-		for(SourceEntry source : sources) {
-			if((id != null && id.equals(source.id))) {
-				AL10.alSource3f(source.src.get(0), AL10.AL_POSITION, x, y, z);
-				return;
-			}
-		}
-	}
+    public void setSampleRate(int rate) {
+        sampleRate = rate;
+    }
 
-	@SideOnly(Side.CLIENT)
-	private double getDistance(double x, double y, double z) {
-		Vec3 pos = Minecraft.getMinecraft().thePlayer.getPosition(1);
-		return pos.distanceTo(Vec3.createVectorHelper(x, y, z));
-	}
+    public void reset() {
+        buffersPlayed.clear();
+        stop();
+    }
 
-	public void push(byte[] data) {
-		// Prepare buffers
-		if (currentBuffer == null) {
-			currentBuffer = BufferUtils.createIntBuffer(1);
-		} else {
-			for (SourceEntry source : sources) {
-				int processed = AL10.alGetSourcei(source.src.get(0), AL10.AL_BUFFERS_PROCESSED);
-				if (processed > 0) {
-					AL10.alSourceUnqueueBuffers(source.src.get(0), currentBuffer);
-				}
-			}
-		}
+    @SideOnly(Side.CLIENT)
+    public void updatePosition(String id, float x, float y, float z) {
+        for (SourceEntry source : sources) {
+            if ((id != null && id.equals(source.id))) {
+                AL10.alSource3f(source.src.get(0), AL10.AL_POSITION, x, y, z);
+                return;
+            }
+        }
+    }
 
-		AL10.alGenBuffers(currentBuffer);
-		AL10.alBufferData(currentBuffer.get(0), AUDIO_FORMAT, (ByteBuffer) (BufferUtils.createByteBuffer(data.length).put(data).flip()), sampleRate);
+    @SideOnly(Side.CLIENT)
+    private double getDistance(double x, double y, double z) {
+        Vec3 pos = Minecraft.getMinecraft().thePlayer.getPosition(1);
+        return pos.distanceTo(Vec3.createVectorHelper(x, y, z));
+    }
 
-		synchronized (buffersPlayed) {
-			buffersPlayed.add(currentBuffer);
-		}
-	}
+    public void push(byte[] data) {
+        // Prepare buffers
+        if (currentBuffer == null) {
+            currentBuffer = BufferUtils.createIntBuffer(1);
+        } else {
+            for (SourceEntry source : sources) {
+                int processed = AL10.alGetSourcei(source.src.get(0), AL10.AL_BUFFERS_PROCESSED);
+                if (processed > 0) {
+                    AL10.alSourceUnqueueBuffers(source.src.get(0), currentBuffer);
+                }
+            }
+        }
 
-	@Deprecated
-	@SideOnly(Side.CLIENT)
-	public void play(int x, int y, int z) {
-		play(x, y, z, 0.0f);
-	}
+        AL10.alGenBuffers(currentBuffer);
+        AL10.alBufferData(
+                currentBuffer.get(0),
+                AUDIO_FORMAT,
+                (ByteBuffer) (BufferUtils.createByteBuffer(data.length).put(data).flip()),
+                sampleRate);
 
-	@Deprecated
-	@SideOnly(Side.CLIENT)
-	public void play(int x, int y, int z, float rolloff) {
-		play(null, x, y, z, rolloff);
-	}
+        synchronized (buffersPlayed) {
+            buffersPlayed.add(currentBuffer);
+        }
+    }
 
-	@SideOnly(Side.CLIENT)
-	public void play(String id, float x, float y, float z) {
-		play(id, x, y, z, 0.0f);
-	}
+    @Deprecated
+    @SideOnly(Side.CLIENT)
+    public void play(int x, int y, int z) {
+        play(x, y, z, 0.0f);
+    }
 
-	@SideOnly(Side.CLIENT)
-	public void play(String id, float x, float y, float z, float rolloff) {
-		FloatBuffer sourcePos = (FloatBuffer) (BufferUtils.createFloatBuffer(3).put(new float[]{ x, y, z }).rewind());
-		FloatBuffer sourceVel = (FloatBuffer) (BufferUtils.createFloatBuffer(3).put(new float[]{0.0f, 0.0f, 0.0f}).rewind());
+    @Deprecated
+    @SideOnly(Side.CLIENT)
+    public void play(int x, int y, int z, float rolloff) {
+        play(null, x, y, z, rolloff);
+    }
 
-		SourceEntry source = null;
-		for (SourceEntry entry : sources) {
-			if (id.equals(entry.id)) {
-				source = entry;
-			}
-		}
-		if (source == null) {
-			source = new SourceEntry(id);
-			sources.add(source);
-		}
+    @SideOnly(Side.CLIENT)
+    public void play(String id, float x, float y, float z) {
+        play(id, x, y, z, 0.0f);
+    }
 
-		// Calculate distance
-		float playerDistance = (float) getDistance(x, y, z);
-		float distanceUsed = distance * (0.2F + (volume * 0.8F));
-		float distanceReal = rolloff <= 0 ? 1 - (playerDistance / distanceUsed) : playerDistance / distanceUsed >= 1 ? 0 : 1;
+    @SideOnly(Side.CLIENT)
+    public void play(String id, float x, float y, float z, float rolloff) {
+        FloatBuffer sourcePos = (FloatBuffer) (BufferUtils.createFloatBuffer(3).put(new float[] { x, y, z }).rewind());
+        FloatBuffer sourceVel = (FloatBuffer) (BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f })
+                .rewind());
 
-		float gain = distanceReal * volume * Minecraft.getMinecraft().gameSettings.getSoundLevel(SoundCategory.RECORDS);
-		if (gain < 0.0F) {
-			gain = 0.0F;
-		} else if (gain > 1.0F) {
-			gain = 1.0F;
-		}
+        SourceEntry source = null;
+        for (SourceEntry entry : sources) {
+            if (id.equals(entry.id)) {
+                source = entry;
+            }
+        }
+        if (source == null) {
+            source = new SourceEntry(id);
+            sources.add(source);
+        }
 
-		// Set settings
-		AL10.alSourcei(source.src.get(0), AL10.AL_LOOPING, AL10.AL_FALSE);
-		AL10.alSourcef(source.src.get(0), AL10.AL_PITCH, 1.0f);
-		AL10.alSourcef(source.src.get(0), AL10.AL_GAIN, gain);
-		AL10.alSource(source.src.get(0), AL10.AL_POSITION, sourcePos);
-		AL10.alSource(source.src.get(0), AL10.AL_VELOCITY, sourceVel);
-		AL10.alSourcef(source.src.get(0), AL10.AL_ROLLOFF_FACTOR, rolloff * (24F * 0.25F) / distanceUsed); // At a distance of 24, a rolloff factor of 0.25 sounds good enough.
+        // Calculate distance
+        float playerDistance = (float) getDistance(x, y, z);
+        float distanceUsed = distance * (0.2F + (volume * 0.8F));
+        float distanceReal = rolloff <= 0 ? 1 - (playerDistance / distanceUsed)
+                : playerDistance / distanceUsed >= 1 ? 0 : 1;
 
-		// Play audio
-		AL10.alSourceQueueBuffers(source.src.get(0), currentBuffer);
+        float gain = distanceReal * volume * Minecraft.getMinecraft().gameSettings.getSoundLevel(SoundCategory.RECORDS);
+        if (gain < 0.0F) {
+            gain = 0.0F;
+        } else if (gain > 1.0F) {
+            gain = 1.0F;
+        }
 
-		int state = AL10.alGetSourcei(source.src.get(0), AL10.AL_SOURCE_STATE);
+        // Set settings
+        AL10.alSourcei(source.src.get(0), AL10.AL_LOOPING, AL10.AL_FALSE);
+        AL10.alSourcef(source.src.get(0), AL10.AL_PITCH, 1.0f);
+        AL10.alSourcef(source.src.get(0), AL10.AL_GAIN, gain);
+        AL10.alSource(source.src.get(0), AL10.AL_POSITION, sourcePos);
+        AL10.alSource(source.src.get(0), AL10.AL_VELOCITY, sourceVel);
+        AL10.alSourcef(source.src.get(0), AL10.AL_ROLLOFF_FACTOR, rolloff * (24F * 0.25F) / distanceUsed); // At a
+                                                                                                           // distance
+                                                                                                           // of 24, a
+                                                                                                           // rolloff
+                                                                                                           // factor of
+                                                                                                           // 0.25
+                                                                                                           // sounds
+                                                                                                           // good
+                                                                                                           // enough.
 
-		if (source.receivedPackets > BUFFER_PACKETS && state != AL10.AL_PLAYING) AL10.alSourcePlay(source.src.get(0));
-		else if (source.receivedPackets <= BUFFER_PACKETS) AL10.alSourcePause(source.src.get(0));
+        // Play audio
+        AL10.alSourceQueueBuffers(source.src.get(0), currentBuffer);
 
-		source.receivedPackets++;
-	}
+        int state = AL10.alGetSourcei(source.src.get(0), AL10.AL_SOURCE_STATE);
 
-	public void stop() {
-		int sourceCount = sources.size();
-		for (SourceEntry source : sources) {
-			AL10.alSourceStop(source.src.get(0));
-			AL10.alDeleteSources(source.src.get(0));
-		}
-		sources.clear();
+        if (source.receivedPackets > BUFFER_PACKETS && state != AL10.AL_PLAYING) AL10.alSourcePlay(source.src.get(0));
+        else if (source.receivedPackets <= BUFFER_PACKETS) AL10.alSourcePause(source.src.get(0));
 
-		int bufferCount = 0;
-		if (buffersPlayed != null) {
-			synchronized (buffersPlayed) {
-				if (currentBuffer != null) {
-					buffersPlayed.add(currentBuffer);
-				}
+        source.receivedPackets++;
+    }
 
-				for (IntBuffer b : buffersPlayed) {
-					b.rewind();
-					for (int i = 0; i < b.limit(); i++) {
-						int buffer = b.get(i);
-						if (AL10.alIsBuffer(buffer)) {
-							AL10.alDeleteBuffers(buffer);
-							bufferCount++;
-						}
-					}
-				}
-				buffersPlayed.clear();
-			}
-		}
+    public void stop() {
+        int sourceCount = sources.size();
+        for (SourceEntry source : sources) {
+            AL10.alSourceStop(source.src.get(0));
+            AL10.alDeleteSources(source.src.get(0));
+        }
+        sources.clear();
 
-		AsieLibMod.log.debug("Cleaned " + bufferCount + " buffers and " + sourceCount + " sources.");
-	}
+        int bufferCount = 0;
+        if (buffersPlayed != null) {
+            synchronized (buffersPlayed) {
+                if (currentBuffer != null) {
+                    buffersPlayed.add(currentBuffer);
+                }
+
+                for (IntBuffer b : buffersPlayed) {
+                    b.rewind();
+                    for (int i = 0; i < b.limit(); i++) {
+                        int buffer = b.get(i);
+                        if (AL10.alIsBuffer(buffer)) {
+                            AL10.alDeleteBuffers(buffer);
+                            bufferCount++;
+                        }
+                    }
+                }
+                buffersPlayed.clear();
+            }
+        }
+
+        AsieLibMod.log.debug("Cleaned " + bufferCount + " buffers and " + sourceCount + " sources.");
+    }
 }

@@ -3,24 +3,12 @@ package pl.asie.lib;
 import java.lang.reflect.Method;
 import java.util.Random;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraftforge.oredict.RecipeSorter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLInterModComms;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.oredict.RecipeSorter;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import pl.asie.lib.api.AsieLibAPI;
 import pl.asie.lib.api.chat.INicknameHandler;
@@ -38,142 +26,181 @@ import pl.asie.lib.tweak.enchantment.EnchantmentTweak;
 import pl.asie.lib.util.color.RecipeColorizer;
 import pl.asie.lib.util.color.RecipeDecolorizer;
 
-@Mod(modid = Mods.AsieLib, name = Mods.AsieLib_NAME, version = "GRADLETOKEN_VERSION",
-	dependencies = "required-after:Forge@[10.13.2.1236,);"
-		+ "after:CoFHAPI|block@[1.7.10R1.0.0,);after:CoFHAPI|energy@[1.7.10R1.0.0,);"
-		+ "after:CoFHAPI|tileentity@[1.7.10R1.0.0,);after:CoFHAPI|item@[1.7.10R1.0.0,)")
+import com.google.common.collect.ImmutableList;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
+
+@Mod(
+        modid = Mods.AsieLib,
+        name = Mods.AsieLib_NAME,
+        version = "GRADLETOKEN_VERSION",
+        dependencies = "required-after:Forge@[10.13.2.1236,);"
+                + "after:CoFHAPI|block@[1.7.10R1.0.0,);after:CoFHAPI|energy@[1.7.10R1.0.0,);"
+                + "after:CoFHAPI|tileentity@[1.7.10R1.0.0,);after:CoFHAPI|item@[1.7.10R1.0.0,)")
 public class AsieLibMod extends AsieLibAPI {
-	public Configuration config;
-	public static Random rand = new Random();
-	public static Logger log;
-	public static ChatHandler chat;
-	public static NicknameRepository nick;
-	public static PacketHandler packet;
 
-	public static boolean ENABLE_DYNAMIC_ENERGY_CALCULATION;
+    public Configuration config;
+    public static Random rand = new Random();
+    public static Logger log;
+    public static ChatHandler chat;
+    public static NicknameRepository nick;
+    public static PacketHandler packet;
 
-	@Instance(value = Mods.AsieLib)
-	public static AsieLibMod instance;
+    public static boolean ENABLE_DYNAMIC_ENERGY_CALCULATION;
 
-	@SidedProxy(clientSide = "pl.asie.lib.ClientProxy", serverSide = "pl.asie.lib.CommonProxy")
-	public static CommonProxy proxy;
+    @Instance(value = Mods.AsieLib)
+    public static AsieLibMod instance;
 
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent event) {
-		AsieLibAPI.instance = this;
-		ToolProviders.registerToolProviders();
-		log = LogManager.getLogger(Mods.AsieLib);
+    @SidedProxy(clientSide = "pl.asie.lib.ClientProxy", serverSide = "pl.asie.lib.CommonProxy")
+    public static CommonProxy proxy;
 
-		config = new Configuration(event.getSuggestedConfigurationFile());
-		config.load();
+    @EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        AsieLibAPI.instance = this;
+        ToolProviders.registerToolProviders();
+        log = LogManager.getLogger(Mods.AsieLib);
 
-		chat = new ChatHandler(config);
+        config = new Configuration(event.getSuggestedConfigurationFile());
+        config.load();
 
-		if(chat.enableChatFeatures) {
-			MinecraftForge.EVENT_BUS.register(chat);
-			FMLCommonHandler.instance().bus().register(chat);
-		}
-		MinecraftForge.EVENT_BUS.register(new AsieLibEvents());
+        chat = new ChatHandler(config);
 
-		ENABLE_DYNAMIC_ENERGY_CALCULATION =
-			config.getBoolean("enableDynamicEnergyUsageCalculation", "general", true, "If you want to disable dynamic generation of current/peak energy usage, use this.");
+        if (chat.enableChatFeatures) {
+            MinecraftForge.EVENT_BUS.register(chat);
+            FMLCommonHandler.instance().bus().register(chat);
+        }
+        MinecraftForge.EVENT_BUS.register(new AsieLibEvents());
 
-		if(System.getProperty("user.dir").contains(".asielauncher")) {
-			log.info("Hey, you! Yes, you! Thanks for using AsieLauncher! ~asie");
-		}
-	}
+        ENABLE_DYNAMIC_ENERGY_CALCULATION = config.getBoolean(
+                "enableDynamicEnergyUsageCalculation",
+                "general",
+                true,
+                "If you want to disable dynamic generation of current/peak energy usage, use this.");
 
-	@EventHandler
-	public void init(FMLInitializationEvent event) {
-		if(proxy.isClient()) {
-			new BlockBaseRender();
-		}
+        if (System.getProperty("user.dir").contains(".asielauncher")) {
+            log.info("Hey, you! Yes, you! Thanks for using AsieLauncher! ~asie");
+        }
+    }
 
-		packet = new PacketHandler(Mods.AsieLib, new NetworkHandlerClient(), null);
+    @EventHandler
+    public void init(FMLInitializationEvent event) {
+        if (proxy.isClient()) {
+            new BlockBaseRender();
+        }
 
-		if(config.get("enchantments", "usefulBaneOfArthropods", false,
-			"Might make Bane Of Arthropods actually useful (Experimental)").getBoolean(false)) {
-			EnchantmentTweak.registerBaneEnchantment(config.getInt("baneEnchantmentID", "enchantments", 244, 0, 255,
-				"The enchantment ID for the better Bane Of Arthropods"));
-			EnchantmentTweak tweak = new EnchantmentTweak();
-			MinecraftForge.EVENT_BUS.register(tweak);
-			FMLCommonHandler.instance().bus().register(tweak);
-		}
+        packet = new PacketHandler(Mods.AsieLib, new NetworkHandlerClient(), null);
 
-		nick = new NicknameRepository();
-		MinecraftForge.EVENT_BUS.register(nick);
+        if (config.get(
+                "enchantments",
+                "usefulBaneOfArthropods",
+                false,
+                "Might make Bane Of Arthropods actually useful (Experimental)").getBoolean(false)) {
+            EnchantmentTweak.registerBaneEnchantment(
+                    config.getInt(
+                            "baneEnchantmentID",
+                            "enchantments",
+                            244,
+                            0,
+                            255,
+                            "The enchantment ID for the better Bane Of Arthropods"));
+            EnchantmentTweak tweak = new EnchantmentTweak();
+            MinecraftForge.EVENT_BUS.register(tweak);
+            FMLCommonHandler.instance().bus().register(tweak);
+        }
 
-		NicknameNetworkHandler nicknameHandler = new NicknameNetworkHandler();
-		registerNicknameHandler(nicknameHandler);
-		FMLCommonHandler.instance().bus().register(nicknameHandler);
+        nick = new NicknameRepository();
+        MinecraftForge.EVENT_BUS.register(nick);
 
-		if(config.get("tweaks", "dyeItemNamesInAnvil", true).getBoolean(true)) {
-			MinecraftForge.EVENT_BUS.register(new AnvilDyeTweak());
-		}
+        NicknameNetworkHandler nicknameHandler = new NicknameNetworkHandler();
+        registerNicknameHandler(nicknameHandler);
+        FMLCommonHandler.instance().bus().register(nicknameHandler);
 
-		RecipeSorter.register("asielib:colorizer", RecipeColorizer.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
-		RecipeSorter.register("asielib:decolorizer", RecipeDecolorizer.class, RecipeSorter.Category.SHAPELESS, "after:asielib:colorizer");
-	}
+        if (config.get("tweaks", "dyeItemNamesInAnvil", true).getBoolean(true)) {
+            MinecraftForge.EVENT_BUS.register(new AnvilDyeTweak());
+        }
 
-	@EventHandler
-	public void postInit(FMLPostInitializationEvent event) {
-		config.save();
-	}
+        RecipeSorter.register(
+                "asielib:colorizer",
+                RecipeColorizer.class,
+                RecipeSorter.Category.SHAPELESS,
+                "after:forge:shapelessore");
+        RecipeSorter.register(
+                "asielib:decolorizer",
+                RecipeDecolorizer.class,
+                RecipeSorter.Category.SHAPELESS,
+                "after:asielib:colorizer");
+    }
 
-	@EventHandler
-	public void onServerStart(FMLServerStartingEvent event) {
-		chat.registerCommands(event);
-		nick.loadNicknames();
-	}
+    @EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+        config.save();
+    }
 
-	@EventHandler
-	public void onServerStop(FMLServerStoppingEvent event) {
-		nick.saveNicknames();
-	}
+    @EventHandler
+    public void onServerStart(FMLServerStartingEvent event) {
+        chat.registerCommands(event);
+        nick.loadNicknames();
+    }
 
-	public void registerNicknameHandler(INicknameHandler handler) {
-		if(nick != null) {
-			nick.addHandler(handler);
-		}
-	}
+    @EventHandler
+    public void onServerStop(FMLServerStoppingEvent event) {
+        nick.saveNicknames();
+    }
 
-	public INicknameRepository getNicknameRepository() {
-		return nick;
-	}
+    public void registerNicknameHandler(INicknameHandler handler) {
+        if (nick != null) {
+            nick.addHandler(handler);
+        }
+    }
 
-	/**
-	 * Call this using {@link FMLInterModComms#sendMessage}.
-	 * <p/>
-	 * Example:
-	 * FMLInterModComms.sendMessage("asielib", "addToolProvider", "com.example.examplemod.tool.ToolProviders.register")
-	 * @see IToolRegistry
-	 */
-	@EventHandler
-	@SuppressWarnings("unchecked")
-	public void receiveIMC(FMLInterModComms.IMCEvent event) {
-		ImmutableList<FMLInterModComms.IMCMessage> messages = event.getMessages();
-		for(FMLInterModComms.IMCMessage message : messages) {
-			if(message.key.equalsIgnoreCase("addtoolprovider") && message.isStringMessage()) {
-				try {
-					String methodString = message.getStringValue();
-					String[] methodParts = methodString.split("\\.");
-					String methodName = methodParts[methodParts.length - 1];
-					String className = methodString.substring(0, methodString.length() - methodName.length() - 1);
-					try {
-						Class c = Class.forName(className);
-						Method method = c.getDeclaredMethod(methodName, IToolRegistry.class);
-						method.invoke(null, Integration.toolRegistry);
-					} catch(ClassNotFoundException e) {
-						log.warn("Could not find class " + className, e);
-					} catch(NoSuchMethodException e) {
-						log.warn("Could not find method " + methodString, e);
-					} catch(Exception e) {
-						log.warn("Exception while trying to call method " + methodString, e);
-					}
-				} catch(Exception e) {
-					log.warn("Exception while trying to register a ToolProvider", e);
-				}
-			}
-		}
-	}
+    public INicknameRepository getNicknameRepository() {
+        return nick;
+    }
+
+    /**
+     * Call this using {@link FMLInterModComms#sendMessage}.
+     * <p/>
+     * Example: FMLInterModComms.sendMessage("asielib", "addToolProvider",
+     * "com.example.examplemod.tool.ToolProviders.register")
+     * 
+     * @see IToolRegistry
+     */
+    @EventHandler
+    @SuppressWarnings("unchecked")
+    public void receiveIMC(FMLInterModComms.IMCEvent event) {
+        ImmutableList<FMLInterModComms.IMCMessage> messages = event.getMessages();
+        for (FMLInterModComms.IMCMessage message : messages) {
+            if (message.key.equalsIgnoreCase("addtoolprovider") && message.isStringMessage()) {
+                try {
+                    String methodString = message.getStringValue();
+                    String[] methodParts = methodString.split("\\.");
+                    String methodName = methodParts[methodParts.length - 1];
+                    String className = methodString.substring(0, methodString.length() - methodName.length() - 1);
+                    try {
+                        Class c = Class.forName(className);
+                        Method method = c.getDeclaredMethod(methodName, IToolRegistry.class);
+                        method.invoke(null, Integration.toolRegistry);
+                    } catch (ClassNotFoundException e) {
+                        log.warn("Could not find class " + className, e);
+                    } catch (NoSuchMethodException e) {
+                        log.warn("Could not find method " + methodString, e);
+                    } catch (Exception e) {
+                        log.warn("Exception while trying to call method " + methodString, e);
+                    }
+                } catch (Exception e) {
+                    log.warn("Exception while trying to register a ToolProvider", e);
+                }
+            }
+        }
+    }
 }

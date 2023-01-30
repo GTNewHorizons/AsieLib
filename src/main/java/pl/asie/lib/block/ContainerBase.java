@@ -6,27 +6,27 @@ import net.minecraft.inventory.IInventory;
 
 public abstract class ContainerBase extends ContainerInventory {
 
-	private final TileEntityBase entity;
+    private final TileEntityBase entity;
 
-	public ContainerBase(TileEntityBase entity, InventoryPlayer inventoryPlayer) {
-		super(entity instanceof IInventory ? ((IInventory) entity) : null);
-		this.entity = entity;
+    public ContainerBase(TileEntityBase entity, InventoryPlayer inventoryPlayer) {
+        super(entity instanceof IInventory ? ((IInventory) entity) : null);
+        this.entity = entity;
 
-		entity.openInventory();
-	}
+        entity.openInventory();
+    }
 
-	public TileEntityBase getEntity() {
-		return entity;
-	}
+    public TileEntityBase getEntity() {
+        return entity;
+    }
 
-	@Override
-	public boolean canInteractWith(EntityPlayer player) {
-		return this.entity.isUseableByPlayer(player);
-	}
+    @Override
+    public boolean canInteractWith(EntityPlayer player) {
+        return this.entity.isUseableByPlayer(player);
+    }
 
-	@Override
-	public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-		super.onContainerClosed(par1EntityPlayer);
-		this.entity.closeInventory();
-	}
+    @Override
+    public void onContainerClosed(EntityPlayer par1EntityPlayer) {
+        super.onContainerClosed(par1EntityPlayer);
+        this.entity.closeInventory();
+    }
 }
