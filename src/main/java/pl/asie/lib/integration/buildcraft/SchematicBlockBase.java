@@ -6,10 +6,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-import pl.asie.lib.block.BlockBase;
-import pl.asie.lib.tile.TileMachine;
 import buildcraft.api.blueprints.IBuilderContext;
 import buildcraft.api.blueprints.SchematicTile;
+import pl.asie.lib.block.BlockBase;
+import pl.asie.lib.tile.TileMachine;
 
 /**
  * @author Vexatos

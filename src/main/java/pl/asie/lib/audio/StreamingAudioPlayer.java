@@ -14,9 +14,9 @@ import net.minecraft.util.Vec3;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL10;
 
-import pl.asie.lib.AsieLibMod;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import pl.asie.lib.AsieLibMod;
 
 public class StreamingAudioPlayer extends DFPWM {
 

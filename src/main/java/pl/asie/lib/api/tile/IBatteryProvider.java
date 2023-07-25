@@ -1,10 +1,10 @@
 package pl.asie.lib.api.tile;
 
-import pl.asie.lib.reference.Mods;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.tileentity.IEnergyInfo;
 import cpw.mods.fml.common.Optional;
 import ic2.api.energy.tile.IEnergySink;
+import pl.asie.lib.reference.Mods;
 
 @Optional.InterfaceList({
         @Optional.Interface(iface = "cofh.api.tileentity.IEnergyInfo", modid = Mods.API.CoFHTileEntities),

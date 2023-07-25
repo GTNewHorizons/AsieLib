@@ -7,9 +7,9 @@ import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
 
-import pl.asie.lib.block.BlockBase;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import pl.asie.lib.block.BlockBase;
 
 public class BlockBaseRender implements ISimpleBlockRenderingHandler {
 

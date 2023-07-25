@@ -3,9 +3,9 @@ package pl.asie.lib;
 import net.minecraft.init.Items;
 import net.minecraftforge.event.AnvilUpdateEvent;
 
-import pl.asie.lib.util.ChatUtils;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import pl.asie.lib.util.ChatUtils;
 
 public class AnvilDyeTweak {
 

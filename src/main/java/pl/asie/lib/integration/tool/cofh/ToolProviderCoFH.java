@@ -3,8 +3,8 @@ package pl.asie.lib.integration.tool.cofh;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-import pl.asie.lib.api.tool.IToolProvider;
 import cofh.api.item.IToolHammer;
+import pl.asie.lib.api.tool.IToolProvider;
 
 /**
  * @author Vexatos

@@ -10,11 +10,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
-import pl.asie.lib.api.chat.INicknameHandler;
-import pl.asie.lib.api.chat.INicknameRepository;
-import pl.asie.lib.util.ChatUtils;
-import pl.asie.lib.util.PlayerUtils;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.gson.Gson;
@@ -24,6 +19,10 @@ import com.google.gson.reflect.TypeToken;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
+import pl.asie.lib.api.chat.INicknameHandler;
+import pl.asie.lib.api.chat.INicknameRepository;
+import pl.asie.lib.util.ChatUtils;
+import pl.asie.lib.util.PlayerUtils;
 
 public class NicknameRepository implements INicknameRepository {
 
