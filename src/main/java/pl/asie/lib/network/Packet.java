@@ -6,14 +6,13 @@ import java.lang.reflect.Type;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import pl.asie.lib.util.WorldUtils;
-
 import com.google.gson.Gson;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import pl.asie.lib.util.WorldUtils;
 
 public class Packet implements IMessage {
 

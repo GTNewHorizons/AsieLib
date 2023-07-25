@@ -17,13 +17,13 @@ import net.minecraftforge.event.ServerChatEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import pl.asie.lib.AsieLibMod;
-import pl.asie.lib.reference.Mods;
-import pl.asie.lib.util.ChatUtils;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
+import pl.asie.lib.AsieLibMod;
+import pl.asie.lib.reference.Mods;
+import pl.asie.lib.util.ChatUtils;
 
 public class ChatHandler {
 

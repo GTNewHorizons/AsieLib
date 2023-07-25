@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.minecraft.network.INetHandler;
 
-import pl.asie.lib.AsieLibMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import io.netty.buffer.ByteBuf;
@@ -12,6 +11,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageCodec;
+import pl.asie.lib.AsieLibMod;
 
 @Sharable
 public class PacketChannelHandler extends MessageToMessageCodec<FMLProxyPacket, Packet> {

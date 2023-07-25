@@ -3,8 +3,8 @@ package pl.asie.lib.integration.tool.appeng;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-import pl.asie.lib.api.tool.IToolProvider;
 import appeng.api.implementations.items.IAEWrench;
+import pl.asie.lib.api.tool.IToolProvider;
 
 /**
  * @author Vexatos

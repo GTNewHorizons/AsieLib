@@ -22,6 +22,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cofh.api.block.IBlockInfo;
+import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import pl.asie.lib.api.tile.IInformationProvider;
 import pl.asie.lib.client.BlockBaseRender;
 import pl.asie.lib.gui.managed.IGuiProvider;
@@ -30,10 +34,6 @@ import pl.asie.lib.reference.Mods;
 import pl.asie.lib.tile.TileMachine;
 import pl.asie.lib.util.ItemUtils;
 import pl.asie.lib.util.MiscUtils;
-import cofh.api.block.IBlockInfo;
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @Optional.InterfaceList({
         // @Optional.Interface(iface = "gregtech.api.interfaces.IDebugableBlock", modid = Mods.GregTech),

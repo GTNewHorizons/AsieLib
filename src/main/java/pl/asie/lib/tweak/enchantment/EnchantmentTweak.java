@@ -12,11 +12,11 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.event.AnvilUpdateEvent;
 
-import pl.asie.lib.AsieLibMod;
-import pl.asie.lib.util.RayTracer;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import pl.asie.lib.AsieLibMod;
+import pl.asie.lib.util.RayTracer;
 
 /**
  * @author Vexatos

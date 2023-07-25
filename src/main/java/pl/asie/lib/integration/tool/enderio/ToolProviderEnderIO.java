@@ -3,8 +3,8 @@ package pl.asie.lib.integration.tool.enderio;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-import pl.asie.lib.api.tool.IToolProvider;
 import crazypants.enderio.api.tool.ITool;
+import pl.asie.lib.api.tool.IToolProvider;
 
 /**
  * @author Vexatos

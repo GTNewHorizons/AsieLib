@@ -5,10 +5,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import pl.asie.lib.AsieLibMod;
 import pl.asie.lib.Packets;
 import pl.asie.lib.network.Packet;
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 
 public class WorldUtils {
 

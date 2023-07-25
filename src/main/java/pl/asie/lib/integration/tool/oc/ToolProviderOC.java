@@ -1,10 +1,9 @@
 package pl.asie.lib.integration.tool.oc;
 
-import li.cil.oc.api.internal.Wrench;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
+import li.cil.oc.api.internal.Wrench;
 import pl.asie.lib.api.tool.IToolProvider;
 
 /**

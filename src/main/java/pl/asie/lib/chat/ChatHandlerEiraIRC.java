@@ -4,8 +4,8 @@ import net.blay09.mods.eirairc.api.event.RelayChat;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.MinecraftForge;
 
-import pl.asie.lib.reference.Mods;
 import cpw.mods.fml.common.Optional;
+import pl.asie.lib.reference.Mods;
 
 public class ChatHandlerEiraIRC {
 

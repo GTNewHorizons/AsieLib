@@ -7,10 +7,10 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.network.IGuiHandler;
 import pl.asie.lib.AsieLibMod;
 import pl.asie.lib.block.ContainerBase;
 import pl.asie.lib.block.TileEntityBase;
-import cpw.mods.fml.common.network.IGuiHandler;
 
 @Deprecated
 public class GuiHandler implements IGuiHandler {

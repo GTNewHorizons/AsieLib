@@ -5,9 +5,9 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import pl.asie.lib.reference.Mods;
 import cofh.api.tileentity.ITileInfo;
 import cpw.mods.fml.common.Optional;
+import pl.asie.lib.reference.Mods;
 
 /**
  * Loosely inspired by CoFH's ITileInfo and generally serves as a wrapper for that and some other APIs.
