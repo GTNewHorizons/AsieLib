@@ -1,19 +1,19 @@
 // Add your dependencies here
 
 dependencies {
-    compileOnly("com.github.GTNewHorizons:EnderIO:2.6.3:api") {
+    compileOnly("com.github.GTNewHorizons:EnderIO:2.8.17:api") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-310-GTNH:api") {
+    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-450-GTNH:api") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:ProjectRed:4.9.3-GTNH:dev") {
+    compileOnly("com.github.GTNewHorizons:ProjectRed:4.10.2-GTNH:dev") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:BuildCraft:7.1.39:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:OpenComputers:1.10.6-GTNH:api") {
+    compileOnly("com.github.GTNewHorizons:OpenComputers:1.10.23-GTNH:api") {
         transitive = false
     }
     compileOnly("curse.maven:cofh-lib-220333:2388748") {
