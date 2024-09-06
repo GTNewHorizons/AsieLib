@@ -4,7 +4,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:EnderIO:2.8.17:api") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-450-GTNH:api") {
+    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-451-GTNH:api") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:ProjectRed:4.10.2-GTNH:dev") {
