@@ -78,7 +78,6 @@ public class AsieLibMod extends AsieLibAPI {
             MinecraftForge.EVENT_BUS.register(chat);
             FMLCommonHandler.instance().bus().register(chat);
         }
-        MinecraftForge.EVENT_BUS.register(new AsieLibEvents());
 
         ENABLE_DYNAMIC_ENERGY_CALCULATION = config.getBoolean(
                 "enableDynamicEnergyUsageCalculation",
